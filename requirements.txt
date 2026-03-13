@@ -9,3 +9,5 @@ onnxruntime
 onnxruntime-gpu
 streamlit
 streamlit-drawable-canvas
+
+altair<5.0.0
