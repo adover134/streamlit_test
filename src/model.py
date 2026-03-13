@@ -7,7 +7,7 @@ from torchvision.transforms import v2
 # 모델을 로드합니다. 사용자 상황에 따라 GPU도 사용 가능하도록 설정했습니다.
 ort_session = ort.InferenceSession(
     "src/assets/mnist-12-int8.onnx",
-    providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
+    providers=["AzureExecutionProvider", "CPUExecutionProvider"]
 )
 
 # streamlit의 canvas로 받는 이미지는 단순히 배열이어서 먼저 PIL 이미지로 변환해야 됩니다.

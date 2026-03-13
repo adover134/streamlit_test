@@ -2,6 +2,8 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import pandas as pd
+import torch
+from torchvision.transforms import v2
 from src.model import predict_number
 
 
@@ -28,7 +30,14 @@ canvas_result = st_canvas( # 캔버스 설정은 앞서 작성한 것들을 활�
 if canvas_result.image_data is not None:
     st.title('입력 이미지')
     st.text('모델이 실제로 입력받는 이미지로, 그린 것과 차이가 있을 수 있습니다.')
-    st.image(canvas_result.image_data)
+    transform = v2.Compose([
+        v2.ToPILImage(),
+        v2.ToImage(),
+        v2.ToDtype(torch.float32, scale=True),
+        v2.Resize(28) # 모델이 사용하는 크기인 28*28에 맞춰줍니다.
+    ])
+    ti = transform(canvas_result.image_data)
+    st.image(ti.permute(1, 2, 0).numpy(), clamp=True, channels='')
     res = predict_number(canvas_result.image_data)
     prediction=pd.DataFrame.from_dict({'result':res, 'nums':list(range(10))})
     st.title('예측 결과')
