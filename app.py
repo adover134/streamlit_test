@@ -41,7 +41,8 @@ with col2:
         v2.Resize(28) # 모델이 사용하는 크기인 28*28에 맞춰줍니다.
     ])
     ti = transform(canvas_result.image_data)
-    st.image(ti.permute(1, 2, 0).numpy(), clamp=True, channels='')
+    if ti:
+        st.image(ti.permute(1, 2, 0).numpy(), clamp=True, channels='')
 
 if canvas_result.image_data is not None:
     res = predict_number(canvas_result.image_data)
